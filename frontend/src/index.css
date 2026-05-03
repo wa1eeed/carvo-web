@@ -1,0 +1,221 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-bg: #ffffff;
+  --brand-fg: #09090b;
+  --brand-muted: #71717a;
+  --brand-line: #e4e4e7;
+  --brand-soft: #f4f4f5;
+  --brand-accent: #a1a1aa;
+
+  /* Signature warm metallic accent that elevates the otherwise zinc palette */
+  --brand-gold: #c9a96e;
+  --brand-gold-deep: #8a6f3d;
+}
+
+html { scroll-behavior: smooth; }
+
+/* Tajawal on ALL elements in Arabic mode — comprehensive override */
+html[dir="rtl"] *:not(.font-mono):not(.font-display):not(canvas) {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* Restore exceptions */
+html[dir="rtl"] .font-mono { font-family: 'JetBrains Mono', monospace !important; }
+html[dir="rtl"] .font-display { font-family: 'Bebas Neue', sans-serif !important; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--brand-bg);
+  color: var(--brand-fg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Subtle grain across the whole page — adds organic texture against flat whites */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url("https://grainy-gradients.vercel.app/noise.svg");
+  opacity: 0.025;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.font-display {
+  font-family: 'Bebas Neue', sans-serif !important;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-rendering: optimizeLegibility;
+}
+
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+.font-arabic { font-family: 'Tajawal', sans-serif !important; }
+
+/* Brand silver gradient — preserved from original brand identity */
+.brand-gradient {
+  background: linear-gradient(145deg, #e4e4e7 0%, #a1a1aa 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.brand-gradient::after {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 45%, rgba(255,255,255,0.4) 50%, transparent 55%);
+  animation: shine 8s infinite;
+}
+
+/* New: subtle gold accent gradient for key highlights */
+.gold-gradient {
+  background: linear-gradient(135deg, #d4b87a 0%, #a78444 100%);
+}
+
+.gold-text {
+  background: linear-gradient(135deg, #c9a96e 0%, #8a6f3d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%) translateY(-100%); }
+  100% { transform: translateX(100%) translateY(100%); }
+}
+
+/* Premium glass card */
+.glass {
+  background: rgba(255, 255, 255, 0.86);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 4px 30px 0 rgba(0, 0, 0, 0.02);
+}
+
+.glass-dark {
+  background: rgba(9, 9, 11, 0.65);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Dotted grid background */
+.grid-overlay {
+  background-image: radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.grid-overlay-dark {
+  background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Topographic-inspired line pattern for hero overlay (signature element) */
+.topo-lines {
+  background-image:
+    linear-gradient(to right, rgba(255,255,255,0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255,255,255,0.04) 1px, transparent 1px);
+  background-size: 80px 80px;
+}
+
+/* Animated radar sweep (used on hero) */
+.radar-sweep {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(201, 169, 110, 0.0) 60deg,
+    rgba(201, 169, 110, 0.18) 90deg,
+    transparent 120deg,
+    transparent 360deg
+  );
+  animation: radarSpin 6s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes radarSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--brand-soft); }
+::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+.custom-scrollbar::-webkit-scrollbar { width: 4px; }
+.custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+.custom-scrollbar::-webkit-scrollbar-thumb { background: #e4e4e7; border-radius: 10px; }
+
+/* Marquee container */
+.marquee-mask {
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+/* Ticker dot */
+.live-dot {
+  position: relative;
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+}
+.live-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: #22c55e;
+  opacity: 0.5;
+  animation: pulse 1.8s cubic-bezier(0,0,0.2,1) infinite;
+}
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 0.5; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+/* RTL helper */
+[dir="rtl"] .flip-rtl { transform: scaleX(-1); }
+
+/* Reset all tracking utilities in RTL mode */
+html[dir="rtl"] [class*="tracking-"] { letter-spacing: normal !important; }
+
+/* ── Typography: Arabic heading line-height ─────────────────────── */
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4 {
+  line-height: 1.4 !important;
+  letter-spacing: normal !important;
+  word-spacing: 0.04em;
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* All text in RTL gets Tajawal — belt and suspenders */
+html[dir="rtl"] *:not(.font-mono):not(canvas):not(code) {
+  font-family: 'Tajawal', sans-serif !important;
+}
+
+/* English display font */
+html[dir="ltr"] .font-display {
+  line-height: 1.1;
+}
+
+/* English headings spacing */
+html[dir="ltr"] h1,
+html[dir="ltr"] h2,
+html[dir="ltr"] h3 {
+  line-height: 1.15;
+}

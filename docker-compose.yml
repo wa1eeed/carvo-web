@@ -1,0 +1,81 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      PORT: 4000
+      JWT_SECRET: ${JWT_SECRET:-change-me-please-use-a-long-random-string}
+      ADMIN_DEFAULT_EMAIL: ${ADMIN_DEFAULT_EMAIL:-admin@carvo.sa}
+      ADMIN_DEFAULT_PASSWORD: ${ADMIN_DEFAULT_PASSWORD:-ChangeMe123!}
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      CORS_ORIGINS: ${CORS_ORIGINS:-https://www.carvo.sa,https://carvo.sa,https://admin.carvo.sa}
+      DB_PATH: /app/data/carvo.db
+      UPLOADS_DIR: /app/uploads
+    volumes:
+      - carvo_data:/app/data
+      - carvo_uploads:/app/uploads
+    expose:
+      - "4000"
+    networks:
+      - carvo
+      - coolify
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_BASE_URL: ""
+    restart: unless-stopped
+    depends_on:
+      - backend
+    expose:
+      - "80"
+    networks:
+      - carvo
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.carvo-frontend.rule=Host(`www.carvo.sa`) || Host(`carvo.sa`)"
+      - "traefik.http.routers.carvo-frontend.entrypoints=https"
+      - "traefik.http.routers.carvo-frontend.tls=true"
+      - "traefik.http.routers.carvo-frontend.tls.certresolver=letsencrypt"
+      - "traefik.http.services.carvo-frontend.loadbalancer.server.port=80"
+      - "traefik.http.routers.carvo-frontend-http.rule=Host(`www.carvo.sa`) || Host(`carvo.sa`)"
+      - "traefik.http.routers.carvo-frontend-http.entrypoints=http"
+      - "traefik.http.routers.carvo-frontend-http.middlewares=redirect-to-https"
+
+  admin:
+    build:
+      context: ./admin
+      args:
+        VITE_API_BASE_URL: ""
+    restart: unless-stopped
+    depends_on:
+      - backend
+    expose:
+      - "80"
+    networks:
+      - carvo
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.carvo-admin.rule=Host(`admin.carvo.sa`)"
+      - "traefik.http.routers.carvo-admin.entrypoints=https"
+      - "traefik.http.routers.carvo-admin.tls=true"
+      - "traefik.http.routers.carvo-admin.tls.certresolver=letsencrypt"
+      - "traefik.http.services.carvo-admin.loadbalancer.server.port=80"
+      - "traefik.http.routers.carvo-admin-http.rule=Host(`admin.carvo.sa`)"
+      - "traefik.http.routers.carvo-admin-http.entrypoints=http"
+      - "traefik.http.routers.carvo-admin-http.middlewares=redirect-to-https"
+
+volumes:
+  carvo_data:
+  carvo_uploads:
+
+networks:
+  carvo:
+    driver: bridge
+  coolify:
+    external: true
