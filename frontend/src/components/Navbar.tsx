@@ -76,7 +76,7 @@ const Navbar: React.FC = () => {
                 className={`px-3 py-1.5 rounded-full transition-all ${lang === 'ar' ? 'bg-zinc-900 text-white' : 'text-zinc-500'}`}>ع</button>
             </div>
             {/* Partner CTA */}
-            <Link to="/partners"
+            <Link to={`/${lang}/partners`}
               className="px-6 py-3 bg-zinc-900 text-white rounded-full font-black text-xs tracking-wide hover:bg-zinc-700 transition-all flex items-center gap-2 whitespace-nowrap">
               <svg className="w-3.5 h-3.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -109,7 +109,7 @@ const Navbar: React.FC = () => {
               <button onClick={() => setLang('en')} className={`px-3 py-1.5 rounded-full ${lang === 'en' ? 'bg-zinc-900 text-white' : 'text-zinc-500'}`}>EN</button>
               <button onClick={() => setLang('ar')} className={`px-3 py-1.5 rounded-full ${lang === 'ar' ? 'bg-zinc-900 text-white' : 'text-zinc-500'}`}>ع</button>
             </div>
-            <Link to="/partners" className="flex-1 text-center py-4 bg-zinc-900 text-white rounded-full font-black text-sm">
+            <Link to={`/${lang}/partners`} className="flex-1 text-center py-4 bg-zinc-900 text-white rounded-full font-black text-sm">
               {t('Become a Partner', 'انضم كشريك')}
             </Link>
           </div>

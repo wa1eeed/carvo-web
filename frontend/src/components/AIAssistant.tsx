@@ -161,9 +161,16 @@ const AIAssistant: React.FC = () => {
       });
 
       sessionRef.current = await sessionPromise;
-    } catch (e) {
-      console.error(e);
-      setMessages((m) => [...m, { role: 'model', text: t('Voice unavailable. Please use chat.', 'الصوت غير متاح حالياً. استخدم الدردشة.') }]);
+    } catch (e: any) {
+      console.error('Voice error:', e);
+      const errMsg = e?.message || '';
+      if (errMsg.includes('getUserMedia') || errMsg.includes('Permission') || errMsg.includes('NotAllowed')) {
+        setMessages((m) => [...m, { role: 'model', text: t('Microphone access denied. Please allow microphone access and try again.', 'تم رفض الوصول للمايكروفون. يرجى السماح بالوصول والمحاولة مجدداً.') }]);
+      } else if (errMsg.includes('503') || errMsg.includes('Gemini') || errMsg.includes('API')) {
+        setMessages((m) => [...m, { role: 'model', text: t('Voice service unavailable. Please check the Gemini API key in admin settings.', 'خدمة الصوت غير متاحة. يرجى التحقق من مفتاح Gemini API في إعدادات الأدمن.') }]);
+      } else {
+        setMessages((m) => [...m, { role: 'model', text: t('Voice connection failed. Switching to chat mode.', 'فشل الاتصال الصوتي. تم التحويل للدردشة.') }]);
+      }
       setMode('CHAT');
     }
   };
@@ -193,14 +200,12 @@ const AIAssistant: React.FC = () => {
         aria-label="Open assistant"
       >
         <div className="absolute inset-0 rounded-full bg-amber-400/40 blur-xl animate-glow" />
-        <div className="relative px-5 py-4 sm:px-6 sm:py-5 brand-gradient rounded-full shadow-2xl flex items-center gap-3 hover:scale-[1.04] transition-transform">
-          <div className="relative">
-            <span className="absolute -top-1 -right-1 live-dot" />
-            <svg className="w-6 h-6 text-zinc-900" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
-            </svg>
-          </div>
-          <span className="hidden sm:inline text-xs font-black tracking-wide uppercase text-zinc-900">
+        <div className="relative px-4 py-3 brand-gradient rounded-2xl shadow-2xl flex flex-row items-center gap-2 hover:scale-[1.04] transition-transform" style={{direction:'ltr'}}>
+          <svg className="w-5 h-5 text-zinc-900 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+          </svg>
+          <span className="live-dot shrink-0" />
+          <span className="text-xs font-black tracking-wide uppercase text-zinc-900 whitespace-nowrap">
             {t('Ask CARVO', 'اسأل كارفو')}
           </span>
         </div>

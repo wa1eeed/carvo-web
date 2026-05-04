@@ -200,13 +200,12 @@ const Hero: React.FC = () => {
             </div>
 
             {/* HOOK */}
-            <h1 className={`font-black leading-[1.15] mb-6 animate-slide-up ${lang === 'ar' ? 'font-arabic text-4xl sm:text-5xl md:text-6xl tracking-normal text-right lg:text-right' : 'text-5xl sm:text-6xl md:text-7xl tracking-tight'}`}
+            <h1 className={`font-black leading-[1.2] mb-6 animate-slide-up ${lang === 'ar' ? 'font-arabic text-3xl sm:text-4xl md:text-5xl tracking-normal text-right lg:text-right' : 'text-5xl sm:text-6xl md:text-7xl tracking-tight'}`}
                 style={{ animationDelay: '120ms' }}>
               {lang === 'ar' ? (
                 <>
-                  <span className="block text-white">سيارتك. أسطولك.</span>
-                  <span className="block text-white">مطالبتك.</span>
-                  <span className="block gold-text">كارفو يُدير الكل.</span>
+                  <span className="block text-white">تجربة واحدة متكاملة</span>
+                  <span className="block gold-text">لإدارة خدمات السيارات للأفراد والشركات.</span>
                 </>
               ) : (
                 <>

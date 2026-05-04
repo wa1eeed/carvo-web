@@ -129,14 +129,13 @@ const ServiceDetailPage: React.FC = () => {
 
             {/* Service cover image — shown above description if provided */}
             {service.cover_image && (
-              <div className="mb-8 rounded-2xl overflow-hidden bg-zinc-100">
-                <img
-                  src={service.cover_image}
-                  alt={title}
-                  className="w-full h-auto max-h-[400px] object-cover"
-                  style={{ objectPosition: 'center' }}
-                />
-              </div>
+              <img
+                src={service.cover_image}
+                alt={title}
+                className="w-full h-auto max-h-[480px] object-cover mb-8"
+                style={{ objectPosition: 'center' }}
+                onError={(e) => { (e.target as HTMLImageElement).style.display='none'; }}
+              />
             )}
 
             <div className="prose prose-zinc max-w-none">
@@ -193,30 +192,91 @@ const ServiceDetailPage: React.FC = () => {
               </div>
             )}
 
-            {/* Request form */}
-            <div id="request" className="p-7 rounded-3xl border border-zinc-100 bg-white shadow-xl shadow-zinc-100/50">
-              <h3 className="text-2xl font-black text-zinc-900 mb-2 leading-[1.3]">{t('Request this service', 'اطلب هذه الخدمة')}</h3>
-              <p className="text-zinc-500 text-sm mb-6 font-light">
-                {t('We respond within minutes during business hours.', 'نرد خلال دقائق ضمن ساعات العمل.')}
-              </p>
+            {/* App Download Box */}
+            <div id="request" className="rounded-3xl overflow-hidden border border-[#c9a96e]/20" style={{background: 'linear-gradient(145deg, #1a1408 0%, #0f0c05 60%, #1c1203 100%)'}}>
+              {/* Top accent line */}
+              <div className="h-px w-full" style={{background: 'linear-gradient(90deg, transparent, #c9a96e, transparent)'}} />
 
-              {requestSent ? (
-                <div className="p-5 bg-emerald-50 border border-emerald-100 text-emerald-700 rounded-2xl text-sm">
-                  {t('Got it. Our dispatch team will reach out shortly.', 'استلمنا طلبك. سيتواصل معك فريق الإرسال قريباً.')}
-                </div>
-              ) : (
-                <form onSubmit={submitRequest} className="space-y-3">
-                  <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} placeholder={t('Full Name', 'الاسم الكامل')} className="w-full px-4 py-3 bg-zinc-50 border border-zinc-100 rounded-xl focus:outline-none focus:border-zinc-900" />
-                  <div className="grid grid-cols-2 gap-3">
-                    <input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} placeholder={t('Phone', 'الهاتف')} className="px-4 py-3 bg-zinc-50 border border-zinc-100 rounded-xl focus:outline-none focus:border-zinc-900" />
-                    <input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} type="email" placeholder={t('Email', 'البريد')} className="px-4 py-3 bg-zinc-50 border border-zinc-100 rounded-xl focus:outline-none focus:border-zinc-900" />
+              {/* Header */}
+              <div className="px-7 pt-6 pb-5">
+                <div className="flex items-center gap-2 mb-4">
+                  <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{background: '#c9a96e'}}>
+                    <svg className="w-4 h-4 text-zinc-900" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M17 2H7C5.9 2 5 2.9 5 4v16c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-5 18c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm5-4H7V4h10v12z"/>
+                    </svg>
                   </div>
-                  <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} placeholder={t('Details (optional)', 'تفاصيل (اختياري)')} rows={3} className="w-full px-4 py-3 bg-zinc-50 border border-zinc-100 rounded-xl focus:outline-none focus:border-zinc-900 resize-none" />
-                  <button type="submit" className="w-full py-4 brand-gradient rounded-full font-black text-xs tracking-wide uppercase hover:scale-[1.01] transition">
-                    {ctaLabel}
-                  </button>
-                </form>
-              )}
+                  <span className="text-[10px] font-black tracking-[0.2em] uppercase" style={{color: '#c9a96e'}}>
+                    {t('CARVO APP', 'تطبيق كارفو')}
+                  </span>
+                </div>
+                <h3 className="text-xl font-black text-white leading-[1.3] mb-2">
+                  {t('Request via CARVO App', 'اطلب الخدمة عبر تطبيق كارفو')}
+                </h3>
+                <p className="text-sm font-light leading-relaxed" style={{color: 'rgba(201,169,110,0.6)'}}>
+                  {t('Scan the QR code or download the app to request this service instantly.', 'امسح الرمز أو حمّل التطبيق لطلب الخدمة فوراً.')}
+                </p>
+              </div>
+
+              {/* QR Code */}
+              <div className="mx-7 mb-5 rounded-2xl p-5 flex items-center justify-center border border-[#c9a96e]/15" style={{background: 'rgba(201,169,110,0.06)'}}>
+                <div className="bg-white rounded-xl p-3">
+                  <svg viewBox="0 0 200 200" className="w-36 h-36" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="10" y="10" width="60" height="60" rx="6" fill="#111" />
+                    <rect x="18" y="18" width="44" height="44" rx="4" fill="white" />
+                    <rect x="26" y="26" width="28" height="28" rx="2" fill="#111" />
+                    <rect x="130" y="10" width="60" height="60" rx="6" fill="#111" />
+                    <rect x="138" y="18" width="44" height="44" rx="4" fill="white" />
+                    <rect x="146" y="26" width="28" height="28" rx="2" fill="#111" />
+                    <rect x="10" y="130" width="60" height="60" rx="6" fill="#111" />
+                    <rect x="18" y="138" width="44" height="44" rx="4" fill="white" />
+                    <rect x="26" y="146" width="28" height="28" rx="2" fill="#111" />
+                    <rect x="80" y="80" width="6" height="6" fill="#111"/><rect x="96" y="80" width="6" height="6" fill="#111"/><rect x="112" y="80" width="6" height="6" fill="#111"/>
+                    <rect x="88" y="88" width="6" height="6" fill="#111"/><rect x="104" y="88" width="6" height="6" fill="#111"/>
+                    <rect x="80" y="96" width="6" height="6" fill="#111"/><rect x="96" y="96" width="6" height="6" fill="#111"/><rect x="112" y="96" width="6" height="6" fill="#111"/>
+                    <rect x="88" y="104" width="6" height="6" fill="#111"/><rect x="80" y="112" width="6" height="6" fill="#111"/><rect x="112" y="112" width="6" height="6" fill="#111"/>
+                    <rect x="80" y="130" width="6" height="6" fill="#111"/><rect x="96" y="138" width="6" height="6" fill="#111"/><rect x="112" y="130" width="6" height="6" fill="#111"/>
+                    <rect x="80" y="146" width="6" height="6" fill="#111"/><rect x="104" y="154" width="6" height="6" fill="#111"/><rect x="88" y="162" width="6" height="6" fill="#111"/>
+                    <rect x="130" y="80" width="6" height="6" fill="#111"/><rect x="146" y="80" width="6" height="6" fill="#111"/><rect x="162" y="88" width="6" height="6" fill="#111"/>
+                    <rect x="138" y="96" width="6" height="6" fill="#111"/><rect x="154" y="104" width="6" height="6" fill="#111"/><rect x="130" y="112" width="6" height="6" fill="#111"/>
+                    <rect x="88" y="88" width="24" height="24" rx="4" fill="#c9a96e" />
+                    <text x="100" y="104" textAnchor="middle" fontSize="11" fontWeight="bold" fill="#1a1408">C</text>
+                  </svg>
+                </div>
+              </div>
+
+              {/* Download buttons */}
+              <div className="px-7 pb-7 grid grid-cols-2 gap-3">
+                <a
+                  href="https://apps.apple.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all hover:opacity-90 border border-[#c9a96e]/20"
+                  style={{background: 'rgba(201,169,110,0.1)'}}
+                >
+                  <svg className="w-6 h-6 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+                  </svg>
+                  <div>
+                    <div className="text-[9px] leading-none" style={{color: 'rgba(201,169,110,0.6)'}}>{t('Download on the', 'حمّل من')}</div>
+                    <div className="text-sm font-black leading-tight text-white">App Store</div>
+                  </div>
+                </a>
+                <a
+                  href="https://play.google.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-2.5 rounded-2xl px-4 py-3 transition-all hover:opacity-90 border border-[#c9a96e]/20"
+                  style={{background: 'rgba(201,169,110,0.1)'}}
+                >
+                  <svg className="w-6 h-6 shrink-0 text-white" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M3.18 23.76c.3.17.64.21.96.13l11.37-11.37L12.1 9.11 3.18 23.76zm17.14-12.09c.42-.35.68-.86.68-1.44s-.26-1.09-.68-1.44L18.1 7.5 14.62 11l3.48 3.48 2.22-2.81zM3.14.24C2.82.16 2.48.2 2.18.37.83 1.13.83 2.87.83 2.87v18.26s0 1.74 1.35 2.5c.3.17.64.21.96.13L15.51 12 3.14.24z"/>
+                  </svg>
+                  <div>
+                    <div className="text-[9px] leading-none" style={{color: 'rgba(201,169,110,0.6)'}}>{t('Get it on', 'حمّل من')}</div>
+                    <div className="text-sm font-black leading-tight text-white">Google Play</div>
+                  </div>
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -229,7 +289,7 @@ const ServiceDetailPage: React.FC = () => {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {services.filter((s) => s.slug !== service.slug).slice(0, 3).map((s) => (
-                <Link key={s.id} to={`/services/${s.slug}`} className="group p-6 rounded-2xl border border-zinc-100 hover:bg-zinc-50 transition-all">
+                <Link key={s.id} to={`/${lang}/services/${s.slug}`} className="group p-6 rounded-2xl border border-zinc-100 hover:bg-zinc-50 transition-all">
                   <div className="w-12 h-12 rounded-xl bg-zinc-100 flex items-center justify-center text-zinc-700 mb-4 group-hover:bg-zinc-900 group-hover:text-white transition">
                     <ServiceIcon iconKey={s.icon_key || s.slug} className="w-7 h-7" />
                   </div>
