@@ -1,6 +1,5 @@
 import React from 'react';
 import Hero from '../components/Hero';
-import PartnerMarquee from '../components/PartnerMarquee';
 import ServicesGrid from '../components/ServicesGrid';
 import StatsBand from '../components/StatsBand';
 import B2BSection from '../components/B2BSection';
@@ -12,7 +11,6 @@ const HomePage: React.FC = () => {
   return (
     <>
       <Hero />
-      <PartnerMarquee />
       <ServicesGrid />
       <StatsBand />
       <B2BSection />
