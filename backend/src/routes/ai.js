@@ -36,9 +36,10 @@ router.get('/config', (req, res) => {
 router.post('/voice-token', (req, res) => {
   const s = getSettings();
   if (!s || !s.enable_voice) return res.status(403).json({ error: 'Voice disabled' });
-  if (!process.env.GEMINI_API_KEY) return res.status(503).json({ error: 'Gemini not configured' });
+  const _key = s.gemini_api_key || process.env.GEMINI_API_KEY;
+  if (!_key) return res.status(503).json({ error: 'Gemini not configured' });
   res.json({
-    token: process.env.GEMINI_API_KEY,
+    token: _key,
     model: s.model_voice || 'gemini-2.0-flash-live-001',
     voice_name: s.voice_name || 'Kore',
     system_instruction: buildSystemInstruction(s),

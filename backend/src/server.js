@@ -52,7 +52,7 @@ const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
   fileFilter: (req, file, cb) => {
-    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/jpg'];
+    const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif', 'image/jpg', 'image/svg+xml', 'image/avif', 'image/heic', 'image/heif', 'image/bmp', 'image/tiff'];
     cb(null, allowed.includes(file.mimetype));
   },
 });
